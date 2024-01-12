@@ -5,6 +5,7 @@ import {
   LinearScale,
   PointElement,
   BarElement,
+  BarController,
   Tooltip,
 } from "chart.js";
 import { Chart } from "react-chartjs-2";
@@ -19,6 +20,7 @@ type Props = {
 const TimeSeriesChart = ({ xData, yData, label }: Props) => {
   ChartJS.register(
     BarElement,
+    BarController,
     LineElement,
     CategoryScale,
     LinearScale,
