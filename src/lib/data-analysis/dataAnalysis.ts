@@ -29,3 +29,19 @@ export const getMentionsByDate = (startTs: number, tweets: ITweet[]) => {
   });
   return result;
 };
+
+export const maFilter = (data: number[], n: number): number[] => {
+  n = Math.min(n, data.length);
+  return data.map((_, index) => {
+    if (index < n) {
+      return data[index]; // For the first n elements, return the element itself
+    } else {
+      // Calculate the average of the previous n elements
+      let sum = 0;
+      for (let i = index - n; i < index; i++) {
+        sum += data[i];
+      }
+      return sum / n;
+    }
+  });
+};

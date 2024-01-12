@@ -1,13 +1,14 @@
 import {
   Chart as ChartJS,
   CategoryScale,
+  LineElement,
   LinearScale,
+  PointElement,
   BarElement,
-  Title,
   Tooltip,
-  Legend,
 } from "chart.js";
-import { Bar } from "react-chartjs-2";
+import { Chart } from "react-chartjs-2";
+import { maFilter } from "@/src/lib/data-analysis/dataAnalysis";
 
 type Props = {
   xData: string[];
@@ -17,22 +18,34 @@ type Props = {
 
 const TimeSeriesChart = ({ xData, yData, label }: Props) => {
   ChartJS.register(
+    BarElement,
+    LineElement,
     CategoryScale,
     LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend
+    PointElement,
+    Tooltip
   );
+
   const chartData = {
     labels: xData,
     datasets: [
       {
+        type: "bar",
         label: label,
         data: yData,
         backgroundColor: "rgba(157, 212, 79, 0.3)",
         borderColor: "rgba(157, 212, 79, 1)",
         borderWidth: 1,
+      },
+      {
+        type: "line",
+        label: "",
+        data: maFilter(yData, 5),
+        fill: false,
+        borderColor: "red",
+        borderWidth: 1,
+        tension: 0.1,
+        pointRadius: 0,
       },
     ],
   };
@@ -54,15 +67,9 @@ const TimeSeriesChart = ({ xData, yData, label }: Props) => {
       },
     },
     responsive: true,
-    plugins: {
-      legend: {
-        color: "#ffffff",
-        display: true,
-      },
-    },
   };
 
-  return <Bar data={chartData} options={options} />;
+  return <Chart type="bar" data={chartData as any} options={options} />;
 };
 
 export default TimeSeriesChart;

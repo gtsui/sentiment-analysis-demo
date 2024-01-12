@@ -60,7 +60,10 @@ const Home = () => {
             searchAfterDelay={5000}
           />
         </div>
-        <div className="w-[90vw] max-w-[800px] place-self-center">
+        <div className="flex flex-col w-[90vw] max-w-[800px] place-self-center gap-2">
+          <h2 className="text-h4 text-primary-500 place-self-center">
+            Mentions Over Time
+          </h2>
           {mentionsByDate.length > 0 && (
             <TimeSeriesChart
               xData={mentionsByDate.map((e) => e.date)}
