@@ -64,7 +64,6 @@ const Home = () => {
           <h2 className="text-h4 text-primary-500 place-self-center">
             Mentions Over Time
           </h2>
-          {isLoading && <p>Loading...</p>}
           {mentionsByDate.length > 0 && (
             <TimeSeriesChart
               xData={mentionsByDate.map((e) => e.date)}
@@ -74,6 +73,7 @@ const Home = () => {
           )}
         </div>
         <h3 className="text-primary-500 text-h3 my-10">Mentions</h3>
+        {isLoading && <p className="text-contrast-high">Loading...</p>}
         {tweets?.map((tweet, i) => (
           <TweetContainer key={`tweet-${tweet.username}-${i}`} tweet={tweet} />
         ))}
