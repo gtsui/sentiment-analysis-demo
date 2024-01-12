@@ -57,13 +57,14 @@ const Home = () => {
           <Search
             placeholder="Search Query"
             onSearch={onSearch}
-            searchAfterDelay={5000}
+            searchAfterDelay={1000}
           />
         </div>
         <div className="flex flex-col w-[90vw] max-w-[800px] place-self-center gap-2">
           <h2 className="text-h4 text-primary-500 place-self-center">
             Mentions Over Time
           </h2>
+          {isLoading && <p>Loading...</p>}
           {mentionsByDate.length > 0 && (
             <TimeSeriesChart
               xData={mentionsByDate.map((e) => e.date)}
