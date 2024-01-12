@@ -1,7 +1,10 @@
+"use client";
+
 import {
   Chart as ChartJS,
   CategoryScale,
   LineElement,
+  LineController,
   LinearScale,
   PointElement,
   BarElement,
@@ -21,6 +24,7 @@ const TimeSeriesChart = ({ xData, yData, label }: Props) => {
   ChartJS.register(
     BarElement,
     BarController,
+    LineController,
     LineElement,
     CategoryScale,
     LinearScale,
