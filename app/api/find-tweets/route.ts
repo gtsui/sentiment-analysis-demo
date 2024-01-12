@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/src/db/connect";
 import TweetModel from "@/src/db/models/tweetSchema";
+import { ITweet } from "@/src/types/types";
 
 export const POST = async (req: NextRequest) => {
   const { query } = await req.json();
@@ -11,8 +12,11 @@ export const POST = async (req: NextRequest) => {
 
   try {
     await connectDB();
-    let results = await TweetModel.find({
+    let results = (await TweetModel.find({
       content: { $regex: query, $options: "i" },
+    })) as ITweet[];
+    results.sort((a, b) => {
+      return b.ts - a.ts;
     });
     return NextResponse.json(results);
   } catch (e) {
