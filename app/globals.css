@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #121212;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply font-header;
+}
+
+p {
+  @apply font-body;
+}
+
+.btn-md {
+  @apply rounded-md h-10 px-4 text-sh4 transition ease-in-out duration-500 select-none;
+}
+
+.btn-primary {
+  @apply bg-primary-500 hover:bg-primary-400 active:bg-primary-600;
+}
