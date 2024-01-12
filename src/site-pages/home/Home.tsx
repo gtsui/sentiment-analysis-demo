@@ -53,7 +53,7 @@ const Home = () => {
   return (
     <div className="flex flex-col items-center mt-20">
       <CardDark0 className="flex flex-col w-full max-w-screen-2xl gap-2 p-6">
-        <div className="w-[600px] mb-10">
+        <div className="w-[90vw] max-w-[600px] mb-10">
           <Search
             placeholder="Search Query"
             onSearch={onSearch}
