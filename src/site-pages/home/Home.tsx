@@ -53,12 +53,13 @@ const Home = () => {
   return (
     <div className="flex flex-col items-center mt-20">
       <CardDark0 className="flex flex-col w-full max-w-screen-2xl gap-2 p-6">
-        <div className="w-[90vw] max-w-[600px] mb-10">
+        <div className="flex flex-col w-[90vw] max-w-[600px] mb-10 gap-2">
           <Search
             placeholder="Search Query"
             onSearch={onSearch}
             searchAfterDelay={1000}
           />
+          {isLoading && <p className="text-contrast-high">Loading...</p>}
         </div>
         <div className="flex flex-col w-[90vw] max-w-[800px] place-self-center gap-2">
           <h2 className="text-h4 text-primary-500 place-self-center">
