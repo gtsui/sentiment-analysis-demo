@@ -3,12 +3,40 @@ import { toDateTimeStr } from "@/src/lib/dateUtils";
 import { ITweet } from "@/src/types/types";
 import { CardDark1, CardDark2 } from "../../common/card/Cards";
 import NewWindow from "@/src/assets/icons/ui/new_window.svg";
+import { useMemo } from "react";
 
 type Props = {
   tweet: ITweet;
+  query: string;
 };
 
-const TweetContainer = ({ tweet }: Props) => {
+const TweetContainer = ({ tweet, query }: Props) => {
+  // ==========================================================================
+  // STATE / HOOKS
+  // ==========================================================================
+  const content = useMemo(() => {
+    const parts = tweet.content.split(new RegExp(`(${query})`, "gi"));
+    return (
+      <span>
+        {parts.map((part, i) =>
+          part.toLowerCase() === query.toLowerCase() ? (
+            <span
+              key={i}
+              style={{ backgroundColor: "#9dd44f", color: "#121212" }}
+            >
+              {part}
+            </span>
+          ) : (
+            part
+          )
+        )}
+      </span>
+    );
+  }, []);
+
+  // ==========================================================================
+  // RENDER
+  // ==========================================================================
   return (
     <>
       <CardDark1 className="flex flex-col p-6 gap-2">
@@ -29,7 +57,7 @@ const TweetContainer = ({ tweet }: Props) => {
           </a>
         </div>
         <CardDark2 className="flex p-6">
-          <p className="text-contrast-high text-p2">{tweet.content}</p>
+          <p className="text-contrast-high text-p2">{content}</p>
         </CardDark2>
       </CardDark1>
     </>

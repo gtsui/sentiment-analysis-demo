@@ -1,5 +1,5 @@
 import { Loading } from "@/src/components/common/loading/Loading";
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, Dispatch, SetStateAction } from "react";
 import Dropdown from "./dropdown/Dropdown";
 
 const options = [
@@ -9,19 +9,25 @@ const options = [
 ];
 
 type Props = {
+  query: string;
+  setQuery: Dispatch<SetStateAction<string>>;
+  usernameFilter: string[];
+  setUsernameFilter: Dispatch<SetStateAction<string[]>>;
   runQueryHandler: (query: string) => void;
   isLoading: boolean;
 };
 
-const QueryForm = ({ runQueryHandler, isLoading }: Props) => {
+const QueryForm = ({
+  query,
+  setQuery,
+  usernameFilter,
+  setUsernameFilter,
+  runQueryHandler,
+  isLoading,
+}: Props) => {
   // ==========================================================================
   // STATE / HOOKS
   // ==========================================================================
-  const [query, setQuery] = useState<string>("");
-  const [usernameFilter, setUsernameFilter] = useState<string[]>([]);
-
-  console.log("QUERY", query);
-  console.log("FILTER", usernameFilter);
 
   // ==========================================================================
   // FUNCTIONS / HANDLERS
