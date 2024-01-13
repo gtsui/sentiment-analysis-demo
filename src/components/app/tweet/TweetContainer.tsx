@@ -29,7 +29,7 @@ const TweetContainer = ({ tweet }: Props) => {
           </a>
         </div>
         <CardDark2 className="flex p-6">
-          <h4 className="text-contrast-high">{tweet.content}</h4>
+          <p className="text-contrast-high text-p2">{tweet.content}</p>
         </CardDark2>
       </CardDark1>
     </>

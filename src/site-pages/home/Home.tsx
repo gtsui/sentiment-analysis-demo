@@ -2,14 +2,15 @@
 
 import { useState } from "react";
 import { CardDark0 } from "@/src/components/common/card/Cards";
-import Search from "@/src/components/common/input/Search";
 import { ITweet } from "@/src/types/types";
 import TweetContainer from "@/src/components/app/tweet/TweetContainer";
 import {
   getMentionsByDate,
   MentionsByDate,
 } from "@/src/lib/data-analysis/dataAnalysis";
-import TimeSeriesChart from "@/src/components/app/chart/TimeSeriesChart";
+import TimeSeriesChart from "./components/TimeSeriesChart";
+import QueryForm from "./components/QueryForm";
+import { Loading } from "@/src/components/common/loading/Loading";
 
 const Home = () => {
   // ==========================================================================
@@ -24,13 +25,12 @@ const Home = () => {
       Math.floor(Date.now() / 1000) - 60 * 60 * 24 * 30,
       tweets
     );
-    console.log(mentionsByDate);
   }
 
   // ==========================================================================
   // FUNCTIONS / HANDLERS
   // ==========================================================================
-  const onSearch = async (query: string) => {
+  const runQueryHandler = async (query: string) => {
     setIsLoading(true);
     const res = await fetch(`/api/find-tweets/`, {
       method: "POST",
@@ -52,14 +52,9 @@ const Home = () => {
   // ==========================================================================
   return (
     <div className="flex flex-col items-center mt-20">
-      <CardDark0 className="flex flex-col w-full max-w-screen-2xl gap-2 p-6">
+      <CardDark0 className="flex flex-col w-[95vw] max-w-screen-lg gap-2 p-6">
         <div className="flex flex-col w-[90vw] max-w-[600px] mb-10 gap-2">
-          <Search
-            placeholder="Search Query"
-            onSearch={onSearch}
-            searchAfterDelay={1000}
-          />
-          {isLoading && <p className="text-contrast-high">Loading...</p>}
+          <QueryForm runQueryHandler={runQueryHandler} isLoading={isLoading} />
         </div>
         <div className="flex flex-col w-[90vw] max-w-[800px] place-self-center gap-2">
           <h2 className="text-h4 text-primary-500 place-self-center">
@@ -74,7 +69,7 @@ const Home = () => {
           )}
         </div>
         <h3 className="text-primary-500 text-h3 my-10">Mentions</h3>
-        {isLoading && <p className="text-contrast-high">Loading...</p>}
+        {isLoading && <Loading size={24} />}
         {tweets?.map((tweet, i) => (
           <TweetContainer key={`tweet-${tweet.username}-${i}`} tweet={tweet} />
         ))}

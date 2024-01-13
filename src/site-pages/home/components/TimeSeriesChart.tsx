@@ -16,9 +16,10 @@ type Props = {
   xData: string[];
   yData: number[];
   label: string;
+  smoothPeriod?: number;
 };
 
-const TimeSeriesChart = ({ xData, yData, label }: Props) => {
+const TimeSeriesChart = ({ xData, yData, label, smoothPeriod }: Props) => {
   ChartJS.register(
     BarElement,
     BarController,
@@ -44,7 +45,7 @@ const TimeSeriesChart = ({ xData, yData, label }: Props) => {
       {
         type: "line",
         label: "",
-        data: maFilter(yData, 5),
+        data: maFilter(yData, smoothPeriod ?? 5),
         fill: false,
         borderColor: "red",
         borderWidth: 1,
