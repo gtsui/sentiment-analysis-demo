@@ -28,7 +28,7 @@ const Dropdown = ({ options, setUsernameFilter }: Props) => {
   return (
     <>
       <Select
-        placeholder={"Filter by username (optional)"}
+        placeholder={"Filter by usernames (optional)"}
         styles={dropdownStyles}
         isMulti={true}
         isClearable={true}
