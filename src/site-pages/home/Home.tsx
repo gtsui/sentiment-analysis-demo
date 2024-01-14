@@ -16,7 +16,7 @@ const Home = () => {
   // ==========================================================================
   // STATE / HOOKS
   // ==========================================================================
-  const [query, setQuery] = useState<string>("");
+  const [keyword, setKeyword] = useState<string>("");
   const [userFilter, setUserFilter] = useState<IUser[]>([]);
   const [tweets, setTweets] = useState<ITweet[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -32,14 +32,14 @@ const Home = () => {
   // ==========================================================================
   // FUNCTIONS / HANDLERS
   // ==========================================================================
-  const runQueryHandler = async (query: string, userFilter: IUser[]) => {
+  const runQueryHandler = async (keyword: string, userFilter: IUser[]) => {
     setIsLoading(true);
     const res = await fetch(`/api/find-tweets/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ query, userFilter }),
+      body: JSON.stringify({ keyword, userFilter }),
     });
 
     // Parse the response body as JSON
@@ -57,8 +57,8 @@ const Home = () => {
       <CardDark0 className="flex flex-col w-[95vw] max-w-screen-lg gap-2 p-6">
         <div className="flex flex-col w-[90vw] max-w-[600px] mb-10 gap-2">
           <QueryForm
-            query={query}
-            setQuery={setQuery}
+            keyword={keyword}
+            setKeyword={setKeyword}
             userFilter={userFilter}
             setUserFilter={setUserFilter}
             runQueryHandler={runQueryHandler}
@@ -83,7 +83,7 @@ const Home = () => {
           <TweetContainer
             key={`tweet-${tweet.username}-${i}`}
             tweet={tweet}
-            query={query}
+            keyword={keyword}
           />
         ))}
       </CardDark0>

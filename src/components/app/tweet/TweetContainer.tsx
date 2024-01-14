@@ -7,19 +7,19 @@ import { useMemo } from "react";
 
 type Props = {
   tweet: ITweet;
-  query: string;
+  keyword: string;
 };
 
-const TweetContainer = ({ tweet, query }: Props) => {
+const TweetContainer = ({ tweet, keyword }: Props) => {
   // ==========================================================================
   // STATE / HOOKS
   // ==========================================================================
   const content = useMemo(() => {
-    const parts = tweet.content.split(new RegExp(`(${query})`, "gi"));
+    const parts = tweet.content.split(new RegExp(`(${keyword})`, "gi"));
     return (
       <span>
         {parts.map((part, i) =>
-          part.toLowerCase() === query.toLowerCase() ? (
+          part.toLowerCase() === keyword.toLowerCase() ? (
             <span
               key={i}
               style={{ backgroundColor: "#9dd44f", color: "#121212" }}

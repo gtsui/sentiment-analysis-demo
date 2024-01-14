@@ -10,17 +10,17 @@ import { IUser } from "@/src/types/types";
 import Dropdown from "./dropdown/Dropdown";
 
 type Props = {
-  query: string;
-  setQuery: Dispatch<SetStateAction<string>>;
+  keyword: string;
+  setKeyword: Dispatch<SetStateAction<string>>;
   userFilter: IUser[];
   setUserFilter: Dispatch<SetStateAction<IUser[]>>;
-  runQueryHandler: (query: string, userFilter: IUser[]) => void;
+  runQueryHandler: (keyword: string, userFilter: IUser[]) => void;
   isLoading: boolean;
 };
 
 const QueryForm = ({
-  query,
-  setQuery,
+  keyword,
+  setKeyword,
   userFilter,
   setUserFilter,
   runQueryHandler,
@@ -54,12 +54,12 @@ const QueryForm = ({
 
   const setQueryHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { target } = e;
-    setQuery(target.value);
+    setKeyword(target.value);
   };
 
   const keyDownHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      runQueryHandler(query, userFilter);
+      runQueryHandler(keyword, userFilter);
     }
   };
 
@@ -84,7 +84,7 @@ const QueryForm = ({
       <div className="flex flex-row items-center gap-2">
         <button
           className="btn-md btn-primary w-28"
-          onClick={() => runQueryHandler(query, userFilter)}
+          onClick={() => runQueryHandler(keyword, userFilter)}
         >
           Run Query
         </button>
