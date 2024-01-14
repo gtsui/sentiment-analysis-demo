@@ -31,7 +31,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${fontHeader.variable} ${fontBody.variable}`}>
         <NextTopLoader
-          color={""}
+          color={"#9dd44f"}
           initialPosition={0.85}
           showSpinner={false}
           height={2}

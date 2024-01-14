@@ -53,8 +53,8 @@ const Home = () => {
   // RENDER
   // ==========================================================================
   return (
-    <div className="flex flex-col items-center mt-20">
-      <CardDark0 className="flex flex-col w-[95vw] max-w-screen-lg gap-2 p-6">
+    <div className="flex flex-col items-center">
+      <CardDark0 className="flex flex-col w-[95vw] max-w-screen-lg gap-2 p-6 mt-20">
         <div className="flex flex-col w-[90vw] max-w-[600px] mb-10 gap-2 place-self-center md:place-self-start">
           <QueryForm
             keyword={keyword}
