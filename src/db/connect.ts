@@ -4,7 +4,6 @@ let dbConnected = false;
 
 export const connectDB = async () => {
   if (dbConnected) {
-    console.log("calling db...");
     return;
   }
 
