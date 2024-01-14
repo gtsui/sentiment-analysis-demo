@@ -1,7 +1,6 @@
 "use client";
 
 import { useContext } from "react";
-import Link from "next/link";
 import { ViewContext } from "@/src/contexts/view";
 import Hamburger from "@/src/assets/icons/ui/hamburger.svg";
 

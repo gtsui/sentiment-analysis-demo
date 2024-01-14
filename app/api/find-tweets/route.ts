@@ -12,9 +12,14 @@ export const POST = async (req: NextRequest) => {
 
   try {
     await connectDB();
-
     let query: any = {
-      content: { $regex: keyword, $options: "i" },
+      content: {
+        $regex: `(?<![A-Za-z0-9])${keyword.replace(
+          /[.*+?^${}()|[\]\\]/g,
+          "\\$&"
+        )}(?![A-Za-z0-9])`,
+        $options: "i",
+      },
     };
 
     if (userFilter && userFilter.length > 0) {
