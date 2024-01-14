@@ -54,8 +54,8 @@ const Home = () => {
   // ==========================================================================
   return (
     <div className="flex flex-col items-center mt-20">
-      <CardDark0 className="flex flex-col w-[95vw] max-w-screen-lg items-center gap-2 p-6">
-        <div className="flex flex-col w-[90vw] max-w-[600px] mb-10 gap-2">
+      <CardDark0 className="flex flex-col w-[95vw] max-w-screen-lg gap-2 p-6">
+        <div className="flex flex-col w-[90vw] max-w-[600px] mb-10 gap-2 place-self-center md:place-self-start">
           <QueryForm
             keyword={keyword}
             setKeyword={setKeyword}
@@ -66,9 +66,9 @@ const Home = () => {
           />
         </div>
         <div className="flex flex-col w-[90vw] max-w-[800px] place-self-center gap-2">
-          <h2 className="text-h4 text-primary-500 place-self-center">
+          <h4 className="text-h4 text-primary-500 place-self-center">
             Mentions Over Time
-          </h2>
+          </h4>
           {mentionsByDate.length > 0 && (
             <TimeSeriesChart
               xData={mentionsByDate.map((e) => e.date)}
@@ -77,7 +77,7 @@ const Home = () => {
             />
           )}
         </div>
-        <h3 className="text-primary-500 text-h3 my-10">Mentions</h3>
+        <h4 className="text-primary-500 text-h4 mt-10">Mentions</h4>
         {isLoading && <Loading size={24} />}
         {tweets?.map((tweet, i) => (
           <TweetContainer
