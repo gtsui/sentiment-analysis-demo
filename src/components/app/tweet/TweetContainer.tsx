@@ -15,7 +15,11 @@ const TweetContainer = ({ tweet, keyword }: Props) => {
   // STATE / HOOKS
   // ==========================================================================
   const content = useMemo(() => {
-    const parts = tweet.content.split(new RegExp(`(${keyword})`, "gi"));
+    const regex = new RegExp(
+      `(?<![A-Za-z0-9])(${keyword})(?![A-Za-z0-9])`,
+      "gi"
+    );
+    const parts = tweet.content.split(regex);
     return (
       <span>
         {parts.map((part, i) =>
