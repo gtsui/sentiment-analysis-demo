@@ -54,7 +54,7 @@ const Home = () => {
   // ==========================================================================
   return (
     <div className="flex flex-col items-center mt-20">
-      <CardDark0 className="flex flex-col w-[95vw] max-w-screen-lg gap-2 p-6">
+      <CardDark0 className="flex flex-col w-[95vw] max-w-screen-lg items-center gap-2 p-6">
         <div className="flex flex-col w-[90vw] max-w-[600px] mb-10 gap-2">
           <QueryForm
             keyword={keyword}
