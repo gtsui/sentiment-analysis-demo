@@ -18,8 +18,8 @@ const fontBody = Exo_2({
 });
 
 export const metadata: Metadata = {
-  title: "tsuigeo NextJS Boilerplate",
-  description: "NextJS Boilerplate by @tsuigeo",
+  title: "@tsuigeo Twitter Dashboards",
+  description: "Dashboards to visualize Twitter data trends by @tsuigeo",
 };
 
 export default function RootLayout({
