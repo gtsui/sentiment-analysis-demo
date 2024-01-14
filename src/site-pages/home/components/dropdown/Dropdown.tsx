@@ -1,5 +1,6 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import Select from "react-select";
+import { IUser } from "@/src/types/types";
 import { dropdownStyles } from "./style";
 
 type Props = {
@@ -7,10 +8,10 @@ type Props = {
     value: string;
     label: string;
   }[];
-  setUsernameFilter: Dispatch<SetStateAction<string[]>>;
+  setUserFilter: Dispatch<SetStateAction<IUser[]>>;
 };
 
-const Dropdown = ({ options, setUsernameFilter }: Props) => {
+const Dropdown = ({ options, setUserFilter }: Props) => {
   // ==========================================================================
   // STATE / HOOKS
   // ==========================================================================
@@ -19,7 +20,11 @@ const Dropdown = ({ options, setUsernameFilter }: Props) => {
   // FUNCTIONS / HANDLERS
   // ==========================================================================
   const selectHandler = (selectedOptions: any) => {
-    setUsernameFilter(selectedOptions.map((o: any) => o.value));
+    setUserFilter(
+      selectedOptions.map((o: any) => {
+        return { username: o.value, displayName: o.label };
+      })
+    );
   };
 
   // ==========================================================================

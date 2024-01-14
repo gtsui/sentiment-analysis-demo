@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/src/db/connect";
 import TweetModel from "@/src/db/models/tweetSchema";
-import { ITweet } from "@/src/types/types";
+import { ITweet, IUser } from "@/src/types/types";
 
 export const POST = async (req: NextRequest) => {
-  const { query } = await req.json();
+  const { query, userFilter } = await req.json();
+
+  console.log(userFilter);
 
   if (query.length === 0) {
     return NextResponse.json([]);
@@ -12,9 +14,18 @@ export const POST = async (req: NextRequest) => {
 
   try {
     await connectDB();
-    let results = (await TweetModel.find({
+
+    let queryCondition: any = {
       content: { $regex: query, $options: "i" },
-    })) as ITweet[];
+    };
+
+    if (userFilter && userFilter.length > 0) {
+      queryCondition["username"] = {
+        $in: userFilter.map((u: IUser) => u.username),
+      };
+    }
+
+    let results = (await TweetModel.find(queryCondition)) as ITweet[];
     results.sort((a, b) => {
       return b.ts - a.ts;
     });

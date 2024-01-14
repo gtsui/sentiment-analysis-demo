@@ -1,37 +1,57 @@
+import {
+  useState,
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+} from "react";
 import { Loading } from "@/src/components/common/loading/Loading";
-import { useState, ChangeEvent, Dispatch, SetStateAction } from "react";
+import { IUser } from "@/src/types/types";
 import Dropdown from "./dropdown/Dropdown";
-
-const options = [
-  { value: "chocolate", label: "Chocolate" },
-  { value: "strawberry", label: "Strawberry" },
-  { value: "vanilla", label: "Vanilla" },
-];
 
 type Props = {
   query: string;
   setQuery: Dispatch<SetStateAction<string>>;
-  usernameFilter: string[];
-  setUsernameFilter: Dispatch<SetStateAction<string[]>>;
-  runQueryHandler: (query: string) => void;
+  userFilter: IUser[];
+  setUserFilter: Dispatch<SetStateAction<IUser[]>>;
+  runQueryHandler: (query: string, userFilter: IUser[]) => void;
   isLoading: boolean;
 };
 
 const QueryForm = ({
   query,
   setQuery,
-  usernameFilter,
-  setUsernameFilter,
+  userFilter,
+  setUserFilter,
   runQueryHandler,
   isLoading,
 }: Props) => {
   // ==========================================================================
   // STATE / HOOKS
   // ==========================================================================
+  const [userOptions, setUserOptions] = useState<IUser[]>([]);
+
+  useEffect(() => {
+    getUserOptions();
+  }, []);
 
   // ==========================================================================
   // FUNCTIONS / HANDLERS
   // ==========================================================================
+  const getUserOptions = async () => {
+    const res = await fetch(`/api/get-users/`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    // Parse the response body as JSON
+    const data = (await res.json()) as IUser[];
+    setUserOptions(data);
+    return data;
+  };
+
   const setQueryHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { target } = e;
     setQuery(target.value);
@@ -39,7 +59,7 @@ const QueryForm = ({
 
   const keyDownHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      runQueryHandler(query);
+      runQueryHandler(query, userFilter);
     }
   };
 
@@ -55,11 +75,16 @@ const QueryForm = ({
         onChange={setQueryHandler}
         onKeyDown={keyDownHandler}
       />
-      <Dropdown options={options} setUsernameFilter={setUsernameFilter} />
+      <Dropdown
+        options={userOptions.map((u) => {
+          return { label: "@" + u.username, value: u.username };
+        })}
+        setUserFilter={setUserFilter}
+      />
       <div className="flex flex-row items-center gap-2">
         <button
           className="btn-md btn-primary w-28"
-          onClick={() => runQueryHandler(query)}
+          onClick={() => runQueryHandler(query, userFilter)}
         >
           Run Query
         </button>

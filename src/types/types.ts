@@ -6,3 +6,8 @@ export type ITweet = {
   content: string;
   isRetweet: boolean;
 };
+
+export type IUser = {
+  username: string;
+  displayName: string;
+};

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { CardDark0 } from "@/src/components/common/card/Cards";
-import { ITweet } from "@/src/types/types";
+import { ITweet, IUser } from "@/src/types/types";
 import TweetContainer from "@/src/components/app/tweet/TweetContainer";
 import {
   getMentionsByDate,
@@ -17,8 +17,8 @@ const Home = () => {
   // STATE / HOOKS
   // ==========================================================================
   const [query, setQuery] = useState<string>("");
-  const [usernameFilter, setUsernameFilter] = useState<string[]>([]);
-  const [tweets, setTweets] = useState<ITweet[] | undefined>([]);
+  const [userFilter, setUserFilter] = useState<IUser[]>([]);
+  const [tweets, setTweets] = useState<ITweet[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   let mentionsByDate: MentionsByDate[] = [];
@@ -32,14 +32,14 @@ const Home = () => {
   // ==========================================================================
   // FUNCTIONS / HANDLERS
   // ==========================================================================
-  const runQueryHandler = async (query: string) => {
+  const runQueryHandler = async (query: string, userFilter: IUser[]) => {
     setIsLoading(true);
     const res = await fetch(`/api/find-tweets/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ query }),
+      body: JSON.stringify({ query, userFilter }),
     });
 
     // Parse the response body as JSON
@@ -59,8 +59,8 @@ const Home = () => {
           <QueryForm
             query={query}
             setQuery={setQuery}
-            usernameFilter={usernameFilter}
-            setUsernameFilter={setUsernameFilter}
+            userFilter={userFilter}
+            setUserFilter={setUserFilter}
             runQueryHandler={runQueryHandler}
             isLoading={isLoading}
           />
