@@ -1,11 +1,11 @@
 import ClientOnly from "@/src/components/common/client-only/ClientOnly";
-import TwitterGPT from "@/src/site-pages/twitter-gpt/TwitterGPT";
+import TelegramScraper from "@/src/site-pages/telegram-scraper/TelegramScraper";
 
 export default function Page() {
   return (
     <>
       <ClientOnly>
-        <TwitterGPT />
+        <TelegramScraper />
       </ClientOnly>
     </>
   );
