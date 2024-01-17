@@ -47,6 +47,13 @@ const SideNav = () => {
               <Link
                 className="rounded-md p-1 hover:bg-primary-500 hover:text-neutral-900"
                 onClick={() => toggleSideNav()}
+                href="/post-trade-analytics"
+              >
+                <div className="ml-2">ByBit Post-Trade Analytics</div>
+              </Link>
+              <Link
+                className="rounded-md p-1 hover:bg-primary-500 hover:text-neutral-900"
+                onClick={() => toggleSideNav()}
                 href="/telegram-scraper"
               >
                 <div className="ml-2">Telegram Scraper</div>

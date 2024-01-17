@@ -69,7 +69,7 @@ const QueryForm = ({
   return (
     <div className="flex flex-col gap-4">
       <input
-        className="bg-neutral-700 h-10 px-5 pr-10 w-full rounded-lg text-contrast-high
+        className="bg-neutral-700 h-10 px-5 pr-10 w-full rounded-md text-contrast-high
          placeholder-contrast-low focus:outline-none focus:border focus:border-primary-500"
         placeholder="Keywords"
         onChange={setQueryHandler}
