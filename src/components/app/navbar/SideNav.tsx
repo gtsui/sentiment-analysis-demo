@@ -19,14 +19,14 @@ const SideNav = () => {
       <div
         className={`${
           isSideNavOpen ? "block" : "hidden"
-        } fixed w-full h-screen z-10 bg-[rgba(0,0,0,.4)] lg:hidden`.trim()}
+        } fixed w-full h-screen z-10 bg-[rgba(0,0,0,.4)] xl:hidden`.trim()}
         onClick={() => toggleSideNav()}
       />
 
       {/* Sidebar Object */}
       <div
         className={`${
-          !isSideNavOpen && "-ml-[254px] lg:ml-[0]"
+          !isSideNavOpen && "-ml-[254px] xl:ml-[0]"
         } flex flex-col justify-between fixed w-[254px] h-[100vh] z-20 overflow-auto
          bg-neutral-800 border-r border-r-neutral-700 transition-all`.trim()}
       >
@@ -50,20 +50,6 @@ const SideNav = () => {
                 href="/post-trade-analytics"
               >
                 <div className="ml-2">ByBit Post-Trade Analytics</div>
-              </Link>
-              <Link
-                className="rounded-md p-1 hover:bg-primary-500 hover:text-neutral-900"
-                onClick={() => toggleSideNav()}
-                href="/telegram-scraper"
-              >
-                <div className="ml-2">Telegram Scraper</div>
-              </Link>
-              <Link
-                className="rounded-md p-1 hover:bg-primary-500 hover:text-neutral-900"
-                onClick={() => toggleSideNav()}
-                href="/twitterGPT"
-              >
-                <div className="ml-2">TwitterGPT</div>
               </Link>
             </div>
           </div>

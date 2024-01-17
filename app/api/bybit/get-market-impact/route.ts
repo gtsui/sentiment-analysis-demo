@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Credentials, Venue } from "@/src/lib/market-impact/types";
 import {
-  getAggregatedMarketImpact,
+  aggregateImpacts,
   getAllTradeMarketImpacts,
 } from "@/src/lib/market-impact/impacts";
 
@@ -14,11 +14,7 @@ export const POST = async (req: NextRequest) => {
       apiSecret: apiSecret,
     };
     const impactsArray = await getAllTradeMarketImpacts(credentials, 240, 60);
-    const aggregatedMarketImpact = await getAggregatedMarketImpact(
-      impactsArray,
-      240
-    );
-    return NextResponse.json(aggregatedMarketImpact);
+    return NextResponse.json(impactsArray);
   } catch (e) {
     return NextResponse.json([]);
   }

@@ -49,7 +49,7 @@ const TimeSeriesChart = ({ xData, yData, label, smoothPeriod }: Props) => {
         fill: false,
         borderColor: "red",
         borderWidth: 1,
-        tension: 0.1,
+        tension: 0.5,
         pointRadius: 0,
       },
     ],

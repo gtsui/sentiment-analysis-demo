@@ -31,7 +31,7 @@ export type SingleTradeMarketImpact = {
   symbol: string;
   side: Side;
   execPx: number;
-  impacts: MarketImpactArray;
+  impact: MarketImpactArray;
 };
 
 export type MarketDataPoint = {

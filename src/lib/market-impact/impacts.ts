@@ -7,12 +7,12 @@ import {
 } from "./types";
 import { getHistoricalMarketData, getTradeHistory } from "./adapter";
 
-export const getAggregatedMarketImpact = async (
-  impactsArray: MarketImpactArray[],
+export const aggregateImpacts = (
+  impactsArray: SingleTradeMarketImpact[],
   intervalMinutes: number
 ) => {
   let aggregatedMarketImpact = _calculateAggregatedMarketImpact(
-    impactsArray,
+    impactsArray.map((x) => x.impact),
     intervalMinutes
   );
   return aggregatedMarketImpact;
@@ -23,17 +23,11 @@ export const getAllTradeMarketImpacts = async (
   intervalMinutes: number,
   range: number
 ) => {
-  let impactsArray: MarketImpactArray[] = [];
   let trades = await getTradeHistory(credentials);
-  for (let i = 0; i < trades.length; i++) {
-    let { impacts } = await getSingleTradeMarketImpact(
-      credentials,
-      trades[i],
-      intervalMinutes,
-      range
-    );
-    impactsArray.push(impacts);
-  }
+  const promises = trades.map((t) =>
+    getSingleTradeMarketImpact(credentials, t, intervalMinutes, range)
+  );
+  const impactsArray = await Promise.all(promises);
   return impactsArray;
 };
 
@@ -83,7 +77,7 @@ export const getSingleTradeMarketImpact = async (
     symbol: trade.symbol,
     side,
     execPx: px,
-    impacts,
+    impact: impacts,
   };
   return impact;
 };
@@ -92,27 +86,31 @@ const _calculateAggregatedMarketImpact = (
   impactsList: MarketImpactArray[],
   intervalMinutes: number
 ) => {
-  const n = impactsList[0].length;
-  const sums: number[] = new Array(n).fill(0);
-  const counts: number[] = new Array(n).fill(0);
-  // Iterate over each subarray
-  for (const subarray of impactsList) {
-    // Iterate over each element of the subarray
-    for (let i = 0; i < subarray.length; i++) {
-      const impactValue = subarray[i].impact;
-      if (impactValue !== undefined) {
-        sums[i] += impactValue;
-        counts[i]++;
+  try {
+    const n = impactsList[0].length;
+    const sums: number[] = new Array(n).fill(0);
+    const counts: number[] = new Array(n).fill(0);
+    // Iterate over each subarray
+    for (const subarray of impactsList) {
+      // Iterate over each element of the subarray
+      for (let i = 0; i < subarray.length; i++) {
+        const impactValue = subarray[i].impact;
+        if (impactValue !== undefined) {
+          sums[i] += impactValue;
+          counts[i]++;
+        }
       }
     }
+    // Calculate averages, handling division by zero
+    let aggregatedImpacts: MarketImpactArray = sums.map((sum, index) => {
+      const impact = counts[index] > 0 ? sum / counts[index] : undefined;
+      const ts = intervalMinutes * (-(n - 1) / 2 + index);
+      return { ts, impact, count: counts[index] };
+    });
+    return aggregatedImpacts;
+  } catch (e) {
+    return [];
   }
-  // Calculate averages, handling division by zero
-  let aggregatedImpacts: MarketImpactArray = sums.map((sum, index) => {
-    const impact = counts[index] > 0 ? sum / counts[index] : undefined;
-    const ts = intervalMinutes * (-(n - 1) / 2 + index);
-    return { ts, impact, count: counts[index] };
-  });
-  return aggregatedImpacts;
 };
 
 const _getReturn = (px: number, mark: number) => {

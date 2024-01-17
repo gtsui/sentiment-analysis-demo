@@ -15,9 +15,9 @@ const Navbar = () => {
   // ==========================================================================
   return (
     <>
-      <nav className="fixed w-screen h-[60px] z-10 top-0 left-0 bg-neutral-800 lg:hidden">
+      <nav className="fixed w-screen h-[60px] z-10 top-0 left-0 bg-neutral-800 xl:hidden">
         <div className="max-w-screen-xl h-full flex flex-wrap items-center justify-between mx-auto px-4">
-          <div className="flex flex-row w-full items-center justify-end mr-4 gap-4 lg:hidden">
+          <div className="flex flex-row w-full items-center justify-end mr-4 gap-4 xl:hidden">
             <span className="sr-only">Open main menu</span>
             <div className="text-h4 text-primary-500">LOGO</div>
             <Hamburger

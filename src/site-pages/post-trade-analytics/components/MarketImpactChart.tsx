@@ -14,10 +14,31 @@ import { Chart } from "react-chartjs-2";
 type Props = {
   xData: number[];
   yData: number[];
-  label: string;
+  xLabel: string;
+  yLabel: string;
 };
 
-const MarketImpactChart = ({ xData, yData, label }: Props) => {
+const MarketImpactChart = ({ xData, yData, xLabel, yLabel }: Props) => {
+  const verticalLinePlugin = {
+    id: "verticalLinePlugin",
+    afterDraw: (chart: any) => {
+      if (chart.scales.x) {
+        const ctx = chart.ctx;
+        const xAxis = chart.scales.x;
+        const yPos = xAxis.getPixelForValue(0);
+        ctx.save();
+        ctx.beginPath();
+        ctx.setLineDash([5, 5]);
+        ctx.moveTo(yPos, chart.chartArea.top);
+        ctx.lineTo(yPos, chart.chartArea.bottom);
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = "red"; // or any color you want
+        ctx.stroke();
+        ctx.restore();
+      }
+    },
+  };
+
   ChartJS.register(
     BarElement,
     BarController,
@@ -26,7 +47,8 @@ const MarketImpactChart = ({ xData, yData, label }: Props) => {
     CategoryScale,
     LinearScale,
     PointElement,
-    Tooltip
+    Tooltip,
+    verticalLinePlugin
   );
 
   const chartData = {
@@ -35,11 +57,11 @@ const MarketImpactChart = ({ xData, yData, label }: Props) => {
       {
         type: "line",
         label: "",
-        data: yData,
+        data: yData.map((y) => (y === 0 ? undefined : y)),
         fill: false,
-        borderColor: "green",
-        borderWidth: 2,
-        tension: 0.1,
+        borderColor: "#9dd44f",
+        borderWidth: 1,
+        tension: 0.5,
         pointRadius: 0,
       },
       {
@@ -59,9 +81,15 @@ const MarketImpactChart = ({ xData, yData, label }: Props) => {
   const options = {
     scales: {
       x: {
+        type: "linear",
         ticks: {
           autoSkip: true,
           maxTicksLimit: 10,
+          color: "#ffffff",
+        },
+        title: {
+          display: true,
+          text: xLabel,
           color: "#ffffff",
         },
       },
@@ -69,13 +97,21 @@ const MarketImpactChart = ({ xData, yData, label }: Props) => {
         beginAtZero: true,
         ticks: {
           color: "#ffffff",
+          callback: (v: any) => {
+            return (v * 100).toFixed(1) + "%";
+          },
+        },
+        title: {
+          display: true,
+          text: yLabel,
+          color: "#ffffff",
         },
       },
     },
     responsive: true,
   };
 
-  return <Chart type="bar" data={chartData as any} options={options} />;
+  return <Chart type="bar" data={chartData as any} options={options as any} />;
 };
 
 export default MarketImpactChart;

@@ -1,11 +1,22 @@
 "use client";
 
 import { CardDark0 } from "@/src/components/common/card/Cards";
-import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
+import {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import { Loading } from "@/src/components/common/loading/Loading";
-import { MarketImpactArray } from "@/src/lib/market-impact/types";
+import {
+  MarketImpactArray,
+  SingleTradeMarketImpact,
+} from "@/src/lib/market-impact/types";
 import MarketImpactChart from "./components/MarketImpactChart";
 import HeaderText from "./components/HeaderText";
+import { aggregateImpacts } from "@/src/lib/market-impact/impacts";
+import ImpactChartContainer from "./components/ImpactChartContainer";
 
 const PostTradeAnalytics = () => {
   // ==========================================================================
@@ -14,18 +25,25 @@ const PostTradeAnalytics = () => {
   const [apiKey, setApiKey] = useState<string>("");
   const [apiSecret, setApiSecret] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [marketImpact, setMarketImpact] = useState<MarketImpactArray>([]);
+  const [rawImpacts, setRawImpacts] = useState<SingleTradeMarketImpact[]>([]);
+
+  const overallImpact = aggregateImpacts(rawImpacts, 240);
+  const longOnlyImpact = aggregateImpacts(
+    rawImpacts.filter((i) => i.side === "Long"),
+    240
+  );
+  const shortOnlyImpact = aggregateImpacts(
+    rawImpacts.filter((i) => i.side === "Short"),
+    240
+  );
+  const closeOnlyImpact = aggregateImpacts(
+    rawImpacts.filter((i) => i.side === "CloseLong" || i.side === "CloseShort"),
+    240
+  );
 
   // ==========================================================================
   // FUNCTIONS / HANDLERS
   // ==========================================================================
-  const inputHandler = (
-    e: ChangeEvent<HTMLInputElement>,
-    setter: Dispatch<SetStateAction<string>>
-  ) => {
-    setter(e.target.value);
-  };
-
   const fetchMarketImpact = async () => {
     setIsLoading(true);
     const res = await fetch(`/api/bybit/get-market-impact/`, {
@@ -35,17 +53,25 @@ const PostTradeAnalytics = () => {
       },
       body: JSON.stringify({ apiKey, apiSecret }),
     });
-
-    // Parse the response body as JSON
-    const data = (await res.json()) as MarketImpactArray;
-    setMarketImpact(data);
+    const data = (await res.json()) as SingleTradeMarketImpact[];
+    setRawImpacts(data);
     setIsLoading(false);
     return data;
   };
 
+  const inputHandler = (
+    e: ChangeEvent<HTMLInputElement>,
+    setter: Dispatch<SetStateAction<string>>
+  ) => {
+    setter(e.target.value);
+  };
+
+  // ==========================================================================
+  // RENDER
+  // ==========================================================================
   return (
     <div className="flex flex-col items-center">
-      <CardDark0 className="flex flex-col w-[95vw] max-w-screen-lg gap-2 p-6 mt-20">
+      <CardDark0 className="flex flex-col w-[95vw] max-w-screen-xl gap-2 p-6 mt-20">
         <HeaderText />
         <div className="flex flex-col gap-2">
           <input
@@ -71,14 +97,27 @@ const PostTradeAnalytics = () => {
             </button>
             {isLoading && <Loading size={24} />}
           </div>
-          <div className="flex flex-col w-[90vw] max-w-[800px] place-self-center gap-2">
-            <h4 className="text-h4 text-primary-500 place-self-center">
-              Post-Trade Market Impact
-            </h4>
-            <MarketImpactChart
-              xData={marketImpact.map((i) => i.ts)}
-              yData={marketImpact.map((i) => i.impact ?? 0)}
-              label="Impact"
+
+          <div className="grid lg:grid-cols-2 gap-y-10">
+            <ImpactChartContainer
+              title="Overall Market Impact"
+              marketImpactArray={overallImpact}
+              yLabel="PnL (%)"
+            />
+            <ImpactChartContainer
+              title="Long Only Market Impact"
+              marketImpactArray={longOnlyImpact}
+              yLabel="PnL (%)"
+            />
+            <ImpactChartContainer
+              title="Short Only Market Impact"
+              marketImpactArray={shortOnlyImpact}
+              yLabel="PnL (%)"
+            />
+            <ImpactChartContainer
+              title="Close Only Market Impact"
+              marketImpactArray={closeOnlyImpact}
+              yLabel="PnL (%)"
             />
           </div>
         </div>
